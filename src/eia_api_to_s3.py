@@ -7,13 +7,14 @@ from datetime import datetime, timezone
 from dotenv import load_dotenv
 
 
+# ============================================================
 # Configuration
-
+# ============================================================
 
 load_dotenv()
 
 EIA_API_KEY = os.getenv("EIA_API_KEY")
-AWS_REGION = os.getenv("AWS_DEFAULT_REGION", "us-east-1")
+AWS_REGION = os.getenv("AWS_DEFAULT_REGION", "eu-north-1")
 S3_BUCKET = os.getenv("S3_BUCKET_NAME")
 
 BASE_URL = "https://api.eia.gov/v2/petroleum/crd/crpdn/data/"
@@ -66,8 +67,9 @@ SERIES_CODES = [
 ]
 
 
+# ============================================================
 # Extract
-
+# ============================================================
 
 def fetch_eia_data():
 
@@ -105,8 +107,9 @@ def fetch_eia_data():
     return response.json()
 
 
+# ============================================================
 # Upload Raw Data to S3
-
+# ============================================================
 
 def upload_to_s3(data):
 
@@ -129,7 +132,7 @@ def upload_to_s3(data):
         f"eia_petroleum_{timestamp.strftime('%Y%m%d_%H%M%S')}.json"
     )
 
-    print(f"Uploading raw data to:")
+    print("Uploading raw data to:")
     print(f"s3://{S3_BUCKET}/{s3_key}")
 
     s3.put_object(
@@ -144,8 +147,9 @@ def upload_to_s3(data):
     return s3_key
 
 
+# ============================================================
 # Main
-
+# ============================================================
 
 def main():
 
